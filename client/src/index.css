@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.green {
+  background: #1abc1a;
+}
+
+.bg-brown {
+  background: #a33c0f;
+}
+
+.field {
+  background: #a33c0f;
+  color: white;
+}
+
+.text-color {
+  color: #a33c0f;
+}

@@ -1,0 +1,102 @@
+[
+  {
+      "id": "0",
+      "ville": "lucknow",
+      "region": "5"
+  },
+  {
+      "id": "1",
+      "ville": "kanpur",
+      "region": "9"
+  },
+  {
+      "id": "2",
+      "ville": "agra",
+      "region": "8"
+  },
+  {
+      "id": "3",
+      "ville": "varanasi",
+      "region": "5"
+  },
+  {
+      "id": "4",
+      "ville": "prayagraj",
+      "region": "9"
+  },
+  {
+      "id": "5",
+      "ville": "gorakhpur",
+      "region": "3"
+  },
+  {
+      "id": "6",
+      "ville": "meerut",
+      "region": "2"
+  },
+  {
+      "id": "7",
+      "ville": "bareilly",
+      "region": "4"
+  },
+  {
+      "id": "8",
+      "ville": "aligarh",
+      "region": "3"
+  },
+  {
+      "id": "9",
+      "ville": "ghaziabad",
+      "region": "7"
+  },
+  {
+      "id": "10",
+      "ville": "noida",
+      "region": "1"
+  },
+  {
+      "id": "11",
+      "ville": "gurgaon",
+      "region": "1"
+  },
+  {
+      "id": "12",
+      "ville": "faridabad",
+      "region": "9"
+  },
+  {
+      "id": "13",
+      "ville": "panipat",
+      "region": "2"
+  },
+  {
+      "id": "14",
+      "ville": "karnal",
+      "region": "3"
+  },
+  {
+      "id": "15",
+      "ville": "sonipat",
+      "region": "2"
+  },
+  {
+      "id": "16",
+      "ville": "rohtak",
+      "region": "1"
+  },
+  {
+      "id": "17",
+      "ville": "bhiwani",
+      "region": "8"
+  },
+  {
+      "id": "18",
+      "ville": "hisar",
+      "region": "5"
+  },
+  {
+      "id": "19",
+      "ville": "jind",
+      "region": "7"
+  }
+]
