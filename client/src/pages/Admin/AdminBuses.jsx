@@ -1,40 +1,37 @@
 import React, { useEffect, useState, useCallback } from "react";
 import BusForm from "../../components/BusForm";
 import PageTitle from "../../components/PageTitle";
-import { HideLoading, ShowLoading } from "../../redux/alertsSlice";
-import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { message, Table } from "antd";
 import { Helmet } from "react-helmet";
 
-function AdminBuses() {
-  const dispatch = useDispatch();
+function AdminBuses({ showLoading, hideLoading }) {
   const [showBusForm, setShowBusForm] = useState(false);
   const [buses, setBuses] = useState([]);
   const [selectedBus, setSelectedBus] = useState(null);
 
   const getBuses = useCallback(async () => {
     try {
-      dispatch(ShowLoading());
+      showLoading();
       const response = await axiosInstance.post("/api/buses/get-all-buses", {});
-      dispatch(HideLoading());
+      hideLoading();
       if (response.data.success) {
         setBuses(response.data.data);
       } else {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoading());
+      hideLoading();
       message.error(error.message);
     }
-  }, [dispatch]);
+  }, []);
 
   const deleteBus = async (_id) => {
     try {
-      dispatch(ShowLoading());
+      showLoading();
       const response = await axiosInstance.delete(`/api/buses/${_id}`, {});
 
-      dispatch(HideLoading());
+      hideLoading();
       if (response.data.success) {
         message.success(response.data.message);
         getBuses();
@@ -42,7 +39,7 @@ function AdminBuses() {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoading());
+      hideLoading();
       message.error(error.message);
     }
   };

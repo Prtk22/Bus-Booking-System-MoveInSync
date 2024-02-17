@@ -1,11 +1,10 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import "./index.css";
 import "antd/dist/antd.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loader from "./components/Loader";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { useSelector } from "react-redux";
 
 const Index = lazy(() => import("./pages/Index"));
 const Login = lazy(() => import("./pages/Login"));
@@ -18,7 +17,14 @@ const BookNow = lazy(() => import("./pages/BookNow"));
 const Bookings = lazy(() => import("./pages/Bookings"));
 
 function App() {
-  const { loading } = useSelector((state) => state.alerts);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const showLoading = () => {
+    setLoading(true);
+  }
+  const hideLoading = () => {
+    setLoading(true);
+  }
   return (
     <div className="App">
       {loading && <Loader />}
@@ -28,17 +34,16 @@ function App() {
             <Route
               path="/"
               element={
-                <PublicRoute>
-                  <Index />
+                <PublicRoute >
+                  <Index showLoading={showLoading} hideLoading={hideLoading} />
                 </PublicRoute>
               }
             />
-
             <Route
               path="/bus-booking"
               element={
-                <ProtectedRoute>
-                  <Home />
+                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <Home showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -46,8 +51,8 @@ function App() {
             <Route
               path="/bookings"
               element={
-                <ProtectedRoute>
-                  <Bookings />
+                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <Bookings showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -55,8 +60,8 @@ function App() {
             <Route
               path="/book-now/:id"
               element={
-                <ProtectedRoute>
-                  <BookNow />
+                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <BookNow showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -64,8 +69,8 @@ function App() {
             <Route
               path="/admin/bookings"
               element={
-                <ProtectedRoute>
-                  <AdminBookings />
+                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <AdminBookings showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -73,16 +78,16 @@ function App() {
             <Route
               path="/admin/buses"
               element={
-                <ProtectedRoute>
-                  <AdminBuses />
+                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <AdminBuses showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
             <Route
               path="/admin/users"
               element={
-                <ProtectedRoute>
-                  <AdminUsers />
+                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <AdminUsers showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -91,7 +96,7 @@ function App() {
               path="/login"
               element={
                 <PublicRoute>
-                  <Login />
+                  <Login showLoading={showLoading} hideLoading={hideLoading}/>
                 </PublicRoute>
               }
             />
@@ -99,7 +104,7 @@ function App() {
               path="/register"
               element={
                 <PublicRoute>
-                  <Register />
+                  <Register showLoading={showLoading} hideLoading={hideLoading}/>
                 </PublicRoute>
               }
             />

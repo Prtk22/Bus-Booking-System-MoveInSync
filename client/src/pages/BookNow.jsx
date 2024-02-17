@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { axiosInstance } from "../helpers/axiosInstance";
-import { HideLoading, ShowLoading } from "../redux/alertsSlice";
 import { Row, Col, message } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import SeatSelection from "../components/SeatSelection";
 import { Helmet } from "react-helmet";
 import moment from "moment";
 
-function BookNow() {
+function BookNow({ showLoading, hideLoading }) {
   const navigate = useNavigate();
   const [selectedSeats, setSelectedSeats] = useState([]);
   const params = useParams();
@@ -17,23 +16,23 @@ function BookNow() {
 
   const getBus = useCallback(async () => {
     try {
-      dispatch(ShowLoading());
+      showLoading();
       const response = await axiosInstance.get(`/api/buses/${params.id}`);
-      dispatch(HideLoading());
+      hideLoading();
       if (response.data.success) {
         setBus(response.data.data);
       } else {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoading());
+      hideLoading();
       message.error(error.message);
     }
-  }, [dispatch, params.id]);
+  }, [params.id]);
 
   const bookNow = async () => {
     try {
-      dispatch(ShowLoading());
+      showLoading();
       const response = await axiosInstance.post(
         `/api/bookings/book-seat/${localStorage.getItem("user_id")}`,
         {
@@ -41,7 +40,7 @@ function BookNow() {
           seats: selectedSeats
         }
       );
-      dispatch(HideLoading());
+      hideLoading();
       if (response.data.success) {
         message.success(response.data.message);
         navigate("/bookings");
@@ -49,7 +48,7 @@ function BookNow() {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoading());
+      hideLoading();
       message.error(error.message);
     }
   };

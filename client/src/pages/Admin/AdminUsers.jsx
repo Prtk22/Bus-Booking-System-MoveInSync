@@ -1,31 +1,28 @@
 import React, { useCallback, useState } from "react";
 import PageTitle from "../../components/PageTitle";
-import { HideLoading, ShowLoading } from "../../redux/alertsSlice";
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { message, Table } from "antd";
 import { Helmet } from "react-helmet";
 
-function AdminUsers() {
-  const dispatch = useDispatch();
+function AdminUsers({ showLoading, hideLoading }) {
   const [users, setUsers] = useState([]);
 
   const getUsers = useCallback( async () => {
     try {
-      dispatch(ShowLoading());
+      showLoading();
       const response = await axiosInstance.get("/api/users/get-all-users", {});
-      dispatch(HideLoading());
+      hideLoading();
       if (response.data.success) {
         setUsers(response.data.data);
       } else {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoading());
+      hideLoading();
       message.error(error.message);
     }
-  }, [dispatch]);
+  }, []);
 
   const columns = [
     {

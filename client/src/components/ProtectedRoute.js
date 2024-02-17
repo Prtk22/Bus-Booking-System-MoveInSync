@@ -2,20 +2,14 @@ import React, { useCallback, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import { SetUser } from "../redux/usersSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { ShowLoading, HideLoading } from "../redux/alertsSlice";
 import DefaultLayout from "./DefaultLayout";
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ user, setUser, showLoading, hideLoading, children }) {
   const user_id = localStorage.getItem("user_id");
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const validateToken = useCallback(async () => {
     try {
-      dispatch(ShowLoading());
-
+      showLoading();
       const response = await axios.get(
         `/api/users/${user_id} `,
         {},
@@ -25,9 +19,9 @@ function ProtectedRoute({ children }) {
           },
         }
       );
-      dispatch(HideLoading());
+      hideLoading();
       if (response.data.success) {
-        dispatch(SetUser(response.data.data));
+        setUser(response.data.data);
       } else {
         localStorage.removeItem("user_id");
         localStorage.removeItem("token");
@@ -38,10 +32,10 @@ function ProtectedRoute({ children }) {
       localStorage.removeItem("user_id");
       localStorage.removeItem("token");
       message.error(error.message);
-      dispatch(HideLoading());
+      hideLoading();
       navigate("/login");
     }
-  }, [dispatch, navigate, user_id]);
+  }, [navigate, user_id]);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {

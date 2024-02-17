@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { axiosInstance } from "../helpers/axiosInstance";
-import { HideLoading, ShowLoading } from "../redux/alertsSlice";
 import Bus from "../components/Bus";
 import { Row, Col, message } from "antd";
 import { Helmet } from "react-helmet";
 
-function Home() {
-  const dispatch = useDispatch();
+function Home({ showLoading, hideLoading }) {
   const [buses, setBuses] = useState([]);
   const [cities, setCities] = useState([]);
   const [filters, setFilters] = useState({});
@@ -16,6 +13,7 @@ function Home() {
   const getBusesByFilter = useCallback(async () => {
     dispatch(ShowLoading());
     setHasSearched(true);
+    showLoading();
     const from = filters.from;
     const to = filters.to;
     const journeyDate = filters.journeyDate;
@@ -24,12 +22,12 @@ function Home() {
         `/api/buses/get?from=${from}&to=${to}&journeyDate=${journeyDate}`
       );
       setBuses(data.data);
-      dispatch(HideLoading());
+      hideLoading();
     } catch (error) {
-      dispatch(HideLoading());
+      hideLoading();
       message.error(error.response.data.message);
     }
-  }, [filters, dispatch]);
+  }, [filters]);
 
   useEffect(() => {
     axiosInstance.get("/api/cities/get-all-cities").then((response) => {

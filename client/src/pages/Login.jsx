@@ -2,37 +2,37 @@ import React, { useState } from "react";
 import { Form, message } from "antd";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { ShowLoading, HideLoading } from "../redux/alertsSlice";
 import { Helmet } from "react-helmet";
 
-function Login() {
+function Login({ showLoading, hideLoading }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const onFinish = async (values) => {
     try {
-      dispatch(ShowLoading());
+      showLoading();
       const response = await axios.post("/api/auth/login", values);
-      dispatch(HideLoading());
+      hideLoading();
+      console.log("response is", response);
       if (response.data.success) {
         message.success(response.data.message);
         localStorage.setItem("token", response.data.data);
         localStorage.setItem("user_id", response.data.user._id);
-
         const idTrip = localStorage.getItem("idTrip");
-
-        if (response.data.user.isAdmin === true) {
-          navigate("/admin/buses");
-        } else if (idTrip == null) {
-          navigate("/bookings");
-        } else if (idTrip !== null) {
-          navigate(`/book-now/${idTrip}`);
-        }
+        setTimeout(() => {
+          console.log("idTrip is", idTrip);
+          if (response.data.user.isAdmin === true) {
+            navigate("/admin/buses");
+          } else if (idTrip == null) {
+            navigate("/bookings");
+          } else if (idTrip !== null) {
+            navigate(`/book-now/${idTrip}`);
+          }
+        }, 5000);
+        
       } else {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoading());
+      hideLoading();
       message.error(error.message);
     }
   };

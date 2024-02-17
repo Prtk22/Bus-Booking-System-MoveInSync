@@ -2,23 +2,21 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { message, Table } from "antd";
-import { HideLoading, ShowLoading } from "../../redux/alertsSlice";
 import PageTitle from "../../components/PageTitle";
 import moment from "moment";
 import { Helmet } from "react-helmet";
 
-function AdminBookings() {
+function AdminBookings({ showLoading, hideLoading }) {
   const [bookings, setBookings] = useState([]);
-  const dispatch = useDispatch();
 
   const getBookings = useCallback(async () => {
     try {
-      dispatch(ShowLoading());
+      showLoading();
       const response = await axiosInstance.get(
         `/api/bookings/get-all-bookings`,
         {}
       );
-      dispatch(HideLoading());
+      hideLoading();
       if (response.data.success) {
         const mappedData = response.data.data.map((booking) => {
           return {
@@ -32,10 +30,9 @@ function AdminBookings() {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoading());
       message.error(error.message);
     }
-  }, [dispatch]);
+  }, []);
 
   const columns = [
     {
