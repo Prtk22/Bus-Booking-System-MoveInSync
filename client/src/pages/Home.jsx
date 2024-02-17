@@ -131,7 +131,7 @@ function Home() {
           })}
           {buses.length === 0 && hasSearched && (
             <div className="flex justify-center w-full">
-              <h1 className="text-2xl font-bold text-color">
+              <h1 className="text-2xl font-bold" style={{color: 'red'}}>
                 No buses found
               </h1>
             </div>

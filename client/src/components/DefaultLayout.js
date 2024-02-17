@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {Row, Col} from "antd"
@@ -6,7 +6,6 @@ import logo from "../assets/img/bus.jpg";
 
 function DefaultLayout({ children }) {
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(false);
   const { user } = useSelector((state) => state.users);
 
   const userMenu = [

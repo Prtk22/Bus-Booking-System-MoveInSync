@@ -1,50 +1,10 @@
-import logo from "../assets/img/logo.png";
 import { Helmet } from "react-helmet";
-import React, { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { axiosInstance } from "../helpers/axiosInstance";
-import { HideLoading, ShowLoading } from "../redux/alertsSlice";
-import Bus from "../components/Bus";
-import { Row, Col, message, Button } from "antd";
+import React from "react";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
-import Travel from "../assets/img/tvael_booking.png"
+import Travel from "../assets/img/travel_booking.png"
 
 function Index() {
-  const dispatch = useDispatch();
-  const [buses, setBuses] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [filters, setFilters] = useState({});
-
-  const getBusesByFilter = useCallback(async () => {
-    dispatch(ShowLoading());
-    const from = filters.from;
-    const to = filters.to;
-    const journeyDate = filters.journeyDate;
-    try {
-      const { data } = await axiosInstance.post(
-        `/api/buses/get?from=${from}&to=${to}&journeyDate=${journeyDate}`
-      );
-
-      setBuses(data.data);
-      dispatch(HideLoading());
-    } catch (error) {
-      dispatch(HideLoading());
-      message.error(error.response.data.message);
-    }
-  }, [filters, dispatch]);
-
-  useEffect(() => {
-    axiosInstance.get("/api/cities/get-all-cities").then((response) => {
-      setCities(response.data.data);
-    });
-  }, []);
-
-  useCallback(() => {
-    if (filters.from && filters.to && filters.journeyDate) {
-      getBusesByFilter();
-    }
-  }, [filters.from, filters.to, filters.journeyDate, getBusesByFilter]);
-
   return (
     <>
       <Helmet>
@@ -55,7 +15,7 @@ function Index() {
           className="hero min-h-screen lg:flex lg:h-full w-full lg:w-3/4"
           style={{height: "100vh"}}
         >
-          <img src={Travel} style={{width: "80%", height: "auto"}} />
+          <img src={Travel} alt="index" style={{width: "80%", height: "auto"}} />
         </div>
 
         <div className="hero-content text-center text-neutral-content flex bg-gray-900">

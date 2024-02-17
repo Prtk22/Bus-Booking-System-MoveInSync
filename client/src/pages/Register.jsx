@@ -52,7 +52,7 @@ function Register() {
             className="hidden lg:flex w-full lg:w-3/4"
             style={{paddingTop: "4rem", paddingLeft: "4rem"}}
           >
-            <img src={RegisterImg} style={{width: '80%', height: 'auto'}} />
+            <img src={RegisterImg} alt="register" style={{width: '80%', height: 'auto'}} />
           </div>
           <div className="bg-gradient-to-r flex w-full lg:w-1/2 justify-center items-center space-y-8">
             <div className="w-3/4 px-8 md:px-32 lg:px-24">
