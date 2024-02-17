@@ -125,7 +125,7 @@ function BookNow() {
                     }`}
                     onClick={bookNow}
                   >
-                    Pay Now
+                    Book Now
                   </button>
               </div>
             </Col>

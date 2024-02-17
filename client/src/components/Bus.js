@@ -1,17 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/img/logo.png";
+import logo from "../assets/img/bus.jpg";
 import moment from "moment";
 
 function Bus({ bus }) {
   const navigate = useNavigate();
+  const percentage = bus.seatsBooked.length * 100 / bus.capacity;
+  //console.log(bus.seatsBooked, bus.capacity, percentage);
+  const busColor = percentage <= 60 ? 'green' : (percentage <=90 ? 'yellow' : 'red')
   return (
     <>
       <div className="max-w-full bg-white flex flex-col rounded overflow-hidden shadow-lg">
-        <div className="flex flex-row items-baseline flex-nowrap bg-green-100 p-2">
-          <img className="h-10 w-10 rounded-full mr-4" src={logo} alt="Logo" />
-          <h1 className="ml-2 uppercase font-bold">Journey Date</h1>
-          <p className="ml-2 font-base text-orange-500">{bus.journeyDate}</p>
+        <div 
+          className="flex flex-row items-baseline flex-nowrap p-2" 
+          style={{backgroundColor: busColor}}
+        >
+          <img className="h-10 w-10 rounded-full mr-4" style={{marginLeft: '2rem', marginTop: '1rem', float: 'left'}} src={logo} alt="Logo" />
+          <h1 className="ml-2 uppercase font-bold" style={{fontSize: '25px', marginBottom: '1rem'}}>Journey Date: {bus.journeyDate}</h1>
         </div>
         <div className="mt-2 flex justify-start bg-white p-2"></div>
         <div className="mt-2 flex sm:flex-row mx-6 sm:justify-between flex-wrap ">

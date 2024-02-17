@@ -50,14 +50,15 @@ function Index() {
       <Helmet>
         <title>Bus-Booking</title>
       </Helmet>
-      <div className="h-screen flex bg-gray-900">
+      <div className="h-screen flex">
         <div
-          className="hero min-h-screen lg:flex w-full lg:w-3/4"
+          className="hero min-h-screen lg:flex lg:h-full w-full lg:w-3/4"
+          style={{height: "100vh"}}
         >
-          <img src={Travel} />
+          <img src={Travel} style={{width: "80%", height: "auto"}} />
         </div>
 
-        <div className="hero-content text-center text-neutral-content">
+        <div className="hero-content text-center text-neutral-content flex bg-gray-900">
           <div className="max-w-md ">
 
             <h1 className="mb-5 text-5xl text-white font-bold ">
