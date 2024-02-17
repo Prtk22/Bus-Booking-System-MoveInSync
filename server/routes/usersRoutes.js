@@ -3,10 +3,10 @@ const router = express.Router();
 const {
   getAllClients,
   GetUserById,
-} = require("../Controllers/usersController");
-const authMiddleware = require("../middlewares/authMiddleware");
+} = require("../controllers/usersController");
+const {isLoggedIn, isAdmin} = require("../middlewares/authMiddleware");
 
-router.get("/get-all-users", authMiddleware, getAllClients);
-router.get("/:userId", GetUserById);
+router.get("/get-all-users", isLoggedIn, isAdmin, getAllClients);
+router.get("/:userId", isLoggedIn, isAdmin, GetUserById);
 
 module.exports = router;

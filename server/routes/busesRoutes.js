@@ -8,14 +8,14 @@ const {
   DeleteBus,
   GetBusById,
   GetBusesByFromAndTo,
-} = require("../Controllers/busController");
-const authMiddleware = require("../middlewares/authMiddleware");
+} = require("../controllers/busController");
+const {isLoggedIn, isAdmin} = require("../middlewares/authMiddleware");
 
-router.post("/add-bus", authMiddleware, AddBus);
-router.post("/get-all-buses", authMiddleware, GetAllBuses);
-router.put("/:id", authMiddleware, UpdateBus);
-router.delete("/:id", authMiddleware, DeleteBus);
-router.get("/:id", authMiddleware, GetBusById);
-router.post("/get", authMiddleware, GetBusesByFromAndTo);
+router.post("/add-bus", isLoggedIn, isAdmin, AddBus);
+router.post("/get-all-buses", isLoggedIn, GetAllBuses);
+router.put("/:id", isLoggedIn, isAdmin, UpdateBus);
+router.delete("/:id", isLoggedIn, isAdmin, DeleteBus);
+router.get("/:id", isLoggedIn, GetBusById);
+router.post("/get", isLoggedIn, GetBusesByFromAndTo);
 
 module.exports = router;

@@ -1,74 +1,78 @@
 const Booking = require("../models/bookingsModel");
 const Bus = require("../models/busModel");
 const User = require("../models/usersModel");
-require("dotenv").config();
 
-// book seat and send email to user with the booking details
 const BookSeat = async (req, res) => {
-  try {
-    const newBooking = new Booking({
-      ...req.body, // spread operator to get all the data from the request body
-      user: req.params.userId,
-    });
-    const user = await User.findById(req.params.userId);
-    // res.json(user._id)
-    await newBooking.save();
-    const bus = await Bus.findById(req.body.bus); // get the bus from the request body
-    bus.seatsBooked = [...bus.seatsBooked, ...req.body.seats]; // add the booked seats to the bus seatsBooked array in the database
-
-    await bus.save();
+  const newBooking = new Booking({
+    ...req.body,
+    user: req.params.userId,
+  });
+  newBooking.save()
+  .then(() => {
+    return User.findById(req.params.userId).exec()
+  })
+  .then(() => {
+    return Bus.findById(req.body.bus);
+  })
+  .then((bus) => {
+    bus.seatsBooked = [...bus.seatsBooked, ...req.body.seats];
+    return bus.save();
+  })
+  .then(() => {
     res.status(200).send({
       message: "Seat booked successfully",
       data: newBooking,
       user: user._id,
       success: true,
     });
-  } catch (error) {
+  })
+  .catch ((error) =>  {
     console.log(error);
-
     res.status(500).send({
       message: "Booking failed",
       data: error,
       success: false,
     });
-  }
+  })
 };
 
 const GetAllBookings = async (req, res) => {
-  try {
-    const bookings = await Booking.find().populate("bus").populate("user");
+  Booking.find().populate("bus").populate("user").exec()
+  .then((bookings) => {
     res.status(200).send({
       message: "All bookings",
       data: bookings,
       success: true,
     });
-  } catch (error) {
+  })
+  .catch((error) => {
     res.status(500).send({
       message: "Failed to get bookings",
       data: error,
       success: false,
     });
-  }
+  });
 };
 
-const GetAllBookingsByUser = async (req, res) => {
-  try {
-    const bookings = await Booking.find({ user: req.params.user_Id }).populate([
-      "bus",
-      "user",
-    ]);
+const GetAllBookingsByUser = (req, res) => {
+  Booking.find({ user: req.params.user_Id }).populate([
+    "bus",
+    "user",
+  ]).exec()
+  .then((bookings) => {
     res.status(200).send({
       message: "Bookings fetched successfully",
       data: bookings,
       success: true,
     });
-  } catch (error) {
+  })
+  .catch ((error) => {
     res.status(500).send({
       message: "Bookings fetch failed",
       data: error,
       success: false,
     });
-  }
+  });
 };
 
 // cancel booking by id and remove the seats from the bus seatsBooked array

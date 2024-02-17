@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express();
 
-const { GetAllCities } = require("../Controllers/citiesController");
+const { GetAllCities } = require("../controllers/citiesController");
 
 router.get("/get-all-cities", GetAllCities);
 

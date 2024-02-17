@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = (req, res, next) => {
+const isLoggedIn = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     if (!token) {
@@ -20,3 +20,16 @@ module.exports = (req, res, next) => {
     });
   }
 };
+
+const isAdmin = (req,res,next) => {
+  if(!req.auth.isAdmin) {
+    res.status(401).send({
+      message: "Unauthorized Access",
+      success: false,
+    });
+    return;
+  }
+  next();
+}
+
+module.exports = { isLoggedIn, isAdmin }
