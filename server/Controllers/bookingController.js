@@ -1,7 +1,6 @@
 const Booking = require("../models/bookingsModel");
 const Bus = require("../models/busModel");
 const User = require("../models/usersModel");
-const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 
 // book seat and send email to user with the booking details
@@ -9,7 +8,6 @@ const BookSeat = async (req, res) => {
   try {
     const newBooking = new Booking({
       ...req.body, // spread operator to get all the data from the request body
-      transactionId: uuidv4(),
       user: req.params.userId,
     });
     const user = await User.findById(req.params.userId);

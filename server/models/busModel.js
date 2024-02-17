@@ -5,7 +5,7 @@ const busSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  busNumber: {
+  busNumber: { 
     type: String,
     required: true,
   },
