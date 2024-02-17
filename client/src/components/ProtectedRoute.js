@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import DefaultLayout from "./DefaultLayout";
 
-function ProtectedRoute({ user, setUser, showLoading, hideLoading, children }) {
+function ProtectedRoute({ user, setUser, showLoading, hideLoading, children, token, setToken }) {
   const user_id = localStorage.getItem("user_id");
   const navigate = useNavigate();
   const validateToken = useCallback(async () => {
@@ -12,10 +12,9 @@ function ProtectedRoute({ user, setUser, showLoading, hideLoading, children }) {
       showLoading();
       const response = await axios.get(
         `/api/users/${user_id} `,
-        {},
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -25,27 +24,29 @@ function ProtectedRoute({ user, setUser, showLoading, hideLoading, children }) {
       } else {
         localStorage.removeItem("user_id");
         localStorage.removeItem("token");
+        setToken("");
         message.error(response.data.message);
         navigate("/login");
       }
     } catch (error) {
       localStorage.removeItem("user_id");
       localStorage.removeItem("token");
+      setToken("");
       message.error(error.message);
       hideLoading();
       navigate("/login");
     }
-  }, [navigate, user_id]);
+  }, [token, navigate, user_id]);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (token) {
       validateToken();
     } else {
       navigate("/login");
     }
-  }, [navigate, validateToken]);
+  }, [token, navigate, validateToken]);
 
-  return <div>{user && <DefaultLayout>{children}</DefaultLayout>}</div>;
+  return <div>{user && <DefaultLayout user={user}>{children}</DefaultLayout>}</div>;
 }
 
 export default ProtectedRoute;

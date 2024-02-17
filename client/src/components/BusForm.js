@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Modal, Row, Form, Col, message } from "antd";
 import { axiosInstance } from "../helpers/axiosInstance";
-import { HideLoading, ShowLoading } from "../redux/alertsSlice";
 
 function BusForm({
+  token,
+  showLoading,
+  hideLoading,
   showBusForm,
   setShowBusForm,
   type = "add",
@@ -12,17 +13,16 @@ function BusForm({
   selectedBus,
   setSelectedBus,
 }) {
-  const dispatch = useDispatch();
   const [cities, setCities] = useState([]);
 
   const onFinish = async (values) => {
     try {
-      dispatch(ShowLoading());
+      showLoading();
       let response = null;
       if (type === "add") {
-        response = await axiosInstance.post("/api/buses/add-bus", values);
+        response = await axiosInstance(token).post("/api/buses/add-bus", values);
       } else {
-        response = await axiosInstance.put(
+        response = await axiosInstance(token).put(
           `/api/buses/${selectedBus._id}`,
           values
         );
@@ -35,15 +35,15 @@ function BusForm({
       getData();
       setShowBusForm(false);
       setSelectedBus(null);
-      dispatch(HideLoading());
+      hideLoading();
     } catch (error) {
       message.error(error.message);
-      dispatch(HideLoading());
+      hideLoading();
     }
   };
 
   useEffect(() => {
-    axiosInstance.get("/api/cities/get-all-cities").then((response) => {
+    axiosInstance(token).get("/api/cities/get-all-cities").then((response) => {
       setCities(response.data.data);
     });
   }, []);

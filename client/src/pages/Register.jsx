@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Form, message } from "antd";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { ShowLoading, HideLoading } from "../redux/alertsSlice";
 import { Helmet } from "react-helmet";
 import RegisterImg from "../assets/img/register.png"
 
-function Register() {
+function Register({ showLoading, hideLoading}) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const onFinish = async (values) => {
     // compare password and confirm password
     if (values.password !== values.confirmPassword) {
@@ -18,9 +15,9 @@ function Register() {
     }
 
     try {
-      dispatch(ShowLoading());
+      showLoading();
       const response = await axios.post("/api/auth/create-user", values);
-      dispatch(HideLoading());
+      hideLoading();
       if (response.data.success) {
         message.success(response.data.message);
         navigate("/login");
@@ -28,7 +25,7 @@ function Register() {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoading());
+      hideLoading();
       message.error(error.message);
     }
   };

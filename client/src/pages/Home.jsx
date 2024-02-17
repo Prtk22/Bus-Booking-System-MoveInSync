@@ -4,21 +4,20 @@ import Bus from "../components/Bus";
 import { Row, Col, message } from "antd";
 import { Helmet } from "react-helmet";
 
-function Home({ showLoading, hideLoading }) {
+function Home({ token, showLoading, hideLoading }) {
   const [buses, setBuses] = useState([]);
   const [cities, setCities] = useState([]);
   const [filters, setFilters] = useState({});
   const [hasSearched, setHasSearched] = useState(false);
 
   const getBusesByFilter = useCallback(async () => {
-    dispatch(ShowLoading());
     setHasSearched(true);
     showLoading();
     const from = filters.from;
     const to = filters.to;
     const journeyDate = filters.journeyDate;
     try {
-      const { data } = await axiosInstance.post(
+      const { data } = await axiosInstance(token).post(
         `/api/buses/get?from=${from}&to=${to}&journeyDate=${journeyDate}`
       );
       setBuses(data.data);
@@ -30,7 +29,7 @@ function Home({ showLoading, hideLoading }) {
   }, [filters]);
 
   useEffect(() => {
-    axiosInstance.get("/api/cities/get-all-cities").then((response) => {
+    axiosInstance(token).get("/api/cities/get-all-cities").then((response) => {
       setCities(response.data.data);
     });
   }, []);

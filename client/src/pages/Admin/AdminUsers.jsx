@@ -5,13 +5,13 @@ import { axiosInstance } from "../../helpers/axiosInstance";
 import { message, Table } from "antd";
 import { Helmet } from "react-helmet";
 
-function AdminUsers({ showLoading, hideLoading }) {
+function AdminUsers({ token, showLoading, hideLoading }) {
   const [users, setUsers] = useState([]);
 
   const getUsers = useCallback( async () => {
     try {
       showLoading();
-      const response = await axiosInstance.get("/api/users/get-all-users", {});
+      const response = await axiosInstance(token).get("/api/users/get-all-users", {});
       hideLoading();
       if (response.data.success) {
         setUsers(response.data.data);

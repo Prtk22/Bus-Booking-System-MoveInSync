@@ -33,7 +33,6 @@ const GetAllBuses = async (req, res) => {
       if (departure.getTime() - new Date().getTime() < 3600000) {
         await Bus.findByIdAndUpdate(bus._id, { status: "Completed" });
       }
-      // console.log("departure time is : ", departure);
     });
 
     const orderedBuses = buses.sort((a, b) => {

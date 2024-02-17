@@ -5,7 +5,7 @@ import { axiosInstance } from "../../helpers/axiosInstance";
 import { message, Table } from "antd";
 import { Helmet } from "react-helmet";
 
-function AdminBuses({ showLoading, hideLoading }) {
+function AdminBuses({ token, showLoading, hideLoading }) {
   const [showBusForm, setShowBusForm] = useState(false);
   const [buses, setBuses] = useState([]);
   const [selectedBus, setSelectedBus] = useState(null);
@@ -13,7 +13,7 @@ function AdminBuses({ showLoading, hideLoading }) {
   const getBuses = useCallback(async () => {
     try {
       showLoading();
-      const response = await axiosInstance.post("/api/buses/get-all-buses", {});
+      const response = await axiosInstance(token).post("/api/buses/get-all-buses", {});
       hideLoading();
       if (response.data.success) {
         setBuses(response.data.data);
@@ -29,7 +29,7 @@ function AdminBuses({ showLoading, hideLoading }) {
   const deleteBus = async (_id) => {
     try {
       showLoading();
-      const response = await axiosInstance.delete(`/api/buses/${_id}`, {});
+      const response = await axiosInstance(token).delete(`/api/buses/${_id}`, {});
 
       hideLoading();
       if (response.data.success) {
@@ -136,6 +136,9 @@ function AdminBuses({ showLoading, hideLoading }) {
           />
           {showBusForm && (
             <BusForm
+              showLoading={showLoading}
+              hideLoading={hideLoading}
+              token={token}
               showBusForm={showBusForm}
               setShowBusForm={setShowBusForm}
               type={selectedBus ? "edit" : "add"}

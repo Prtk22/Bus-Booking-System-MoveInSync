@@ -6,7 +6,6 @@ import moment from "moment";
 function Bus({ bus }) {
   const navigate = useNavigate();
   const percentage = bus.seatsBooked.length * 100 / bus.capacity;
-  //console.log(bus.seatsBooked, bus.capacity, percentage);
   const busColor = percentage <= 60 ? 'green' : (percentage <=90 ? 'yellow' : 'red')
   return (
     <>

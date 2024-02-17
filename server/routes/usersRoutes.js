@@ -7,6 +7,6 @@ const {
 const {isLoggedIn, isAdmin} = require("../middlewares/authMiddleware");
 
 router.get("/get-all-users", isLoggedIn, isAdmin, getAllClients);
-router.get("/:userId", isLoggedIn, isAdmin, GetUserById);
+router.get("/:userId", isLoggedIn, GetUserById);
 
 module.exports = router;

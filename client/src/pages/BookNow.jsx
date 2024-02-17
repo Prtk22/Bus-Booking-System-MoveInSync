@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { axiosInstance } from "../helpers/axiosInstance";
 import { Row, Col, message } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,17 +6,16 @@ import SeatSelection from "../components/SeatSelection";
 import { Helmet } from "react-helmet";
 import moment from "moment";
 
-function BookNow({ showLoading, hideLoading }) {
+function BookNow({ token, showLoading, hideLoading }) {
   const navigate = useNavigate();
   const [selectedSeats, setSelectedSeats] = useState([]);
   const params = useParams();
-  const dispatch = useDispatch();
   const [bus, setBus] = useState(null);
 
   const getBus = useCallback(async () => {
     try {
       showLoading();
-      const response = await axiosInstance.get(`/api/buses/${params.id}`);
+      const response = await axiosInstance(token).get(`/api/buses/${params.id}`);
       hideLoading();
       if (response.data.success) {
         setBus(response.data.data);
@@ -33,7 +31,7 @@ function BookNow({ showLoading, hideLoading }) {
   const bookNow = async () => {
     try {
       showLoading();
-      const response = await axiosInstance.post(
+      const response = await axiosInstance(token).post(
         `/api/bookings/book-seat/${localStorage.getItem("user_id")}`,
         {
           bus: bus._id,

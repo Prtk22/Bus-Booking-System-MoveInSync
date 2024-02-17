@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-function Login({ showLoading, hideLoading }) {
+function Login({ setToken, showLoading, hideLoading }) {
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
@@ -14,20 +14,20 @@ function Login({ showLoading, hideLoading }) {
       console.log("response is", response);
       if (response.data.success) {
         message.success(response.data.message);
-        localStorage.setItem("token", response.data.data);
+        const tokenReceived = response.data.data;
+        console.log("token is", tokenReceived);
+        localStorage.setItem("token", tokenReceived);
+        setToken(tokenReceived);
         localStorage.setItem("user_id", response.data.user._id);
         const idTrip = localStorage.getItem("idTrip");
-        setTimeout(() => {
-          console.log("idTrip is", idTrip);
-          if (response.data.user.isAdmin === true) {
-            navigate("/admin/buses");
-          } else if (idTrip == null) {
-            navigate("/bookings");
-          } else if (idTrip !== null) {
-            navigate(`/book-now/${idTrip}`);
-          }
-        }, 5000);
-        
+        console.log("idTrip is", idTrip);
+        if (response.data.user.isAdmin === true) {
+          navigate("/admin/buses");
+        } else if (idTrip == null) {
+          navigate("/bookings");
+        } else if (idTrip !== null) {
+          navigate(`/book-now/${idTrip}`);
+        }
       } else {
         message.error(response.data.message);
       }

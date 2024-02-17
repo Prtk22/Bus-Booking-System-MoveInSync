@@ -1,10 +1,6 @@
 import { Helmet } from "react-helmet";
 import React from "react";
 import { Button } from "antd";
-import React, { useState, useEffect, useCallback } from "react";
-import { axiosInstance } from "../helpers/axiosInstance";
-import Bus from "../components/Bus";
-import { Row, Col, message, Button } from "antd";
 import { Link } from "react-router-dom";
 import Travel from "../assets/img/travel_booking.png"
 

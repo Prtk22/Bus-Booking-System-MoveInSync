@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { message, Table } from "antd";
 import PageTitle from "../../components/PageTitle";
 import moment from "moment";
 import { Helmet } from "react-helmet";
 
-function AdminBookings({ showLoading, hideLoading }) {
+function AdminBookings({ token, showLoading, hideLoading }) {
   const [bookings, setBookings] = useState([]);
 
   const getBookings = useCallback(async () => {
     try {
       showLoading();
-      const response = await axiosInstance.get(
+      const response = await axiosInstance(token).get(
         `/api/bookings/get-all-bookings`,
         {}
       );

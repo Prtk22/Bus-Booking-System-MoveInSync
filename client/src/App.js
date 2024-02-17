@@ -18,12 +18,13 @@ const Bookings = lazy(() => import("./pages/Bookings"));
 
 function App() {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(false);
   const showLoading = () => {
     setLoading(true);
   }
   const hideLoading = () => {
-    setLoading(true);
+    setLoading(false);
   }
   return (
     <div className="App">
@@ -35,15 +36,15 @@ function App() {
               path="/"
               element={
                 <PublicRoute >
-                  <Index showLoading={showLoading} hideLoading={hideLoading} />
+                  <Index token={token} showLoading={showLoading} hideLoading={hideLoading} />
                 </PublicRoute>
               }
             />
             <Route
               path="/bus-booking"
               element={
-                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
-                  <Home showLoading={showLoading} hideLoading={hideLoading}/>
+                <ProtectedRoute token={token} setToken={setToken} user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <Home token={token} showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -51,8 +52,8 @@ function App() {
             <Route
               path="/bookings"
               element={
-                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
-                  <Bookings showLoading={showLoading} hideLoading={hideLoading}/>
+                <ProtectedRoute token={token} setToken={setToken} user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <Bookings token={token} showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -60,8 +61,8 @@ function App() {
             <Route
               path="/book-now/:id"
               element={
-                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
-                  <BookNow showLoading={showLoading} hideLoading={hideLoading}/>
+                <ProtectedRoute token={token} setToken={setToken} user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <BookNow token={token} showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -69,8 +70,8 @@ function App() {
             <Route
               path="/admin/bookings"
               element={
-                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
-                  <AdminBookings showLoading={showLoading} hideLoading={hideLoading}/>
+                <ProtectedRoute token={token} setToken={setToken} user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <AdminBookings token={token} showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -78,16 +79,16 @@ function App() {
             <Route
               path="/admin/buses"
               element={
-                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
-                  <AdminBuses showLoading={showLoading} hideLoading={hideLoading}/>
+                <ProtectedRoute token={token} setToken={setToken} user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <AdminBuses token={token} showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
             <Route
               path="/admin/users"
               element={
-                <ProtectedRoute user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
-                  <AdminUsers showLoading={showLoading} hideLoading={hideLoading}/>
+                <ProtectedRoute token={token} setToken={setToken} user={user} setUser={setUser} showLoading={showLoading} hideLoading={hideLoading}>
+                  <AdminUsers token={token} showLoading={showLoading} hideLoading={hideLoading}/>
                 </ProtectedRoute>
               }
             />
@@ -96,7 +97,7 @@ function App() {
               path="/login"
               element={
                 <PublicRoute>
-                  <Login showLoading={showLoading} hideLoading={hideLoading}/>
+                  <Login setToken={setToken} showLoading={showLoading} hideLoading={hideLoading}/>
                 </PublicRoute>
               }
             />

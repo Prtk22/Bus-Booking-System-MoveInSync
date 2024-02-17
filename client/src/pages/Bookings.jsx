@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { axiosInstance } from "../helpers/axiosInstance";
 import { message, Table } from "antd";
 import PageTitle from "../components/PageTitle";
 import moment from "moment"
 import { Helmet } from "react-helmet";
 
-function Bookings({ showLoading, hideLoading }) {
+function Bookings({ token, showLoading, hideLoading }) {
   const [bookings, setBookings] = useState([]);
 
   const getBookings = useCallback(async () => {
     try {
       showLoading();
-      const response = await axiosInstance.get(
+      const response = await axiosInstance(token).get(
         `/api/bookings/${localStorage.getItem("user_id")}`,
         {}
       );
@@ -39,13 +38,13 @@ function Bookings({ showLoading, hideLoading }) {
   const CancelBooking = async () => {
     try {
       showLoading();
-      const res = await axiosInstance.get(
+      const res = await axiosInstance(token).get(
         `/api/bookings/${localStorage.getItem("user_id")}`
       );
       const bus_id = res.data.data[0].bus._id;
       const user_id = res.data.data[0].user._id;
       const booking_id = res.data.data[0]._id;
-      const response = await axiosInstance.delete(
+      const response = await axiosInstance(token).delete(
         `/api/bookings/${booking_id}/${user_id}/${bus_id}`,
         {}
       );
